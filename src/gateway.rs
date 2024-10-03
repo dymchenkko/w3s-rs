@@ -207,7 +207,7 @@ pub enum GatewayStruct {
 pub async fn cid_url_check(
     domain: &str,
     path: &str,
-    progress_listener: Option<fn(&str, u16)>,
+    progress_listener: Option<fn(String, u16)>,
 ) -> GatewayStruct {
     let path_string = path.strip_prefix("/").unwrap_or(path).to_owned();
     let url = format!("{}{}", domain, path);
@@ -220,7 +220,7 @@ pub async fn cid_url_check(
         let status_u16 = resp.status().as_u16();
 
         if let Some(pl) = progress_listener {
-            pl(resp.url().as_str(), status_u16);
+            pl(resp.url().to_string(), status_u16);
         }
 
         if status_u16 == 200 {
@@ -250,7 +250,7 @@ pub async fn cid_url_check(
 pub async fn gateway_page_parse(
     domain: &str,
     path: &str,
-    progress_listener: Option<fn(&str, u16)>,
+    progress_listener: Option<fn(String, u16)>,
 ) -> Option<Vec<GatewayStruct>> {
     let url = format!("{}{}", domain, path);
 
